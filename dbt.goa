@@ -1,0 +1,42 @@
+// package users;
+// import (
+// 	"fmt"
+// 	"database/sql"
+// 	_ "github.com/lib/pq"
+// )
+// const (
+// 	host     = "localhost"
+// 	port     = 5432
+// 	user     = "postgres"
+// 	password = "#server444#"
+// 	dbname   = "users"
+//   )
+//   func main(){
+// 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+//     "password=%s dbname=%s sslmode=disable",
+// 	host, port, user, password, dbname)
+	
+// 	db, err := sql.Open("postgres", psqlInfo)
+// 	if err != nil {
+//   	panic(err)
+// 	}
+
+
+
+// 	err = db.Ping()
+// 	if err != nil {
+// 	  panic(err)
+// 	}
+
+// 	sqlStatement := `
+// 	INSERT INTO users (id,email, first_name, last_name,birth_date)
+// 	VALUES ($1, $2, $3, $4 , $5)`
+// 	_, err = db.Exec(sqlStatement, "30", "jon@calhoun.io", "Jonathan", "Calhoun","2016-06-22 19:10:25-07")
+// 	if err != nil {
+// 	  panic(err)
+// 	}
+
+// 	defer db.Close()
+
+
+//   	}
