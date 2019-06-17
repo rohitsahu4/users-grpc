@@ -5,7 +5,6 @@ import (
 	"log"
 	usr "users-grpc/uproto"
 
-	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 )
 
@@ -21,22 +20,22 @@ func main() {
 
 	//////////CreateUserProfile
 
-	btime := ptypes.TimestampNow()
+	// btime := ptypes.TimestampNow()
 
-	phones := []string{"+91 96440 36993", "+91 96440 36993"}
-	response, err := c.CreateUserProfile(context.Background(), &usr.CreateUserProfileRequest{UserProfile: &usr.UserProfile{FirstName: "raman", LastName: "Sahu", Email: "Rohit@appointy.com", BirthDate: btime, Telephones: phones}})
-	if err != nil {
-		log.Fatalf("Error : %s", err)
-	}
-	log.Printf("%s", response)
-
-	////////GetUserProfile
-
-	// response, err := c.GetUserProfile(context.Background(), &usr.GetUserProfileRequest{Id:""})
+	// phones := []string{"+91 96440 36993", "+91 96440 36993"}
+	// response, err := c.CreateUserProfile(context.Background(), &usr.CreateUserProfileRequest{UserProfile: &usr.UserProfile{FirstName: "raman", LastName: "Sahu", Email: "Rohit@appointy.com", BirthDate: btime, Telephones: phones}})
 	// if err != nil {
 	// 	log.Fatalf("Error : %s", err)
 	// }
 	// log.Printf("%s", response)
+
+	////////GetUserProfile
+
+	response, err := c.GetUserProfile(context.Background(), &usr.GetUserProfileRequest{Id: "d0c00e69-274b-4cbe-939c-df2e32ss44bb8e"})
+	if err != nil {
+		log.Fatalf("Error : %s", err)
+	}
+	log.Printf("%s", response)
 
 	////////////DeleteUserProfile
 

@@ -34,16 +34,18 @@ const (
 var db *sql.DB
 
 type server struct {
-	savedUsers []*usr.CreateUserProfileRequest
 }
 
 func (s *server) CreateUserProfile(c context.Context, req *usr.CreateUserProfileRequest) (*usr.UserProfile, error) {
-	fmt.Println(req.UserProfile)
+
 	p := req.UserProfile
-	timep, _ := ptypes.Timestamp(p.BirthDate)
+	timep, err := ptypes.Timestamp(p.BirthDate)
+	if err != nil {
+		return nil, err
+	}
 	u1, err := uuid.NewV4()
 	if err != nil {
-		fmt.Printf("Something went wrong: %s", err)
+
 		return nil, err
 	}
 
@@ -64,7 +66,7 @@ func (s *server) GetUserProfile(c context.Context, req *usr.GetUserProfileReques
 	id := req.Id
 	res := usr.UserProfile{}
 	times := time.Now()
-	// nos := []string{}
+
 	err := db.QueryRow("SELECT * FROM users WHERE id = $1", id).Scan(&res.Id, &res.Email, &res.FirstName, &res.LastName, &times, pq.Array(res.Telephones))
 	if err != nil {
 		return nil, err
@@ -80,7 +82,6 @@ func (s *server) GetUserProfile(c context.Context, req *usr.GetUserProfileReques
 }
 
 func (s *server) UpdateUserProfile(c context.Context, req *usr.UpdateUserProfileRequest) (*usr.UserProfile, error) {
-	fmt.Println(req.UserProfile)
 
 	p := req.UserProfile
 	timep, _ := ptypes.Timestamp(p.BirthDate)
@@ -148,7 +149,7 @@ WHERE email LIKE $1 OR
 	// nos := []string{}
 	rows, err := db.Query(sqlStatement, fmt.Sprintf("%%%s%%", query))
 	if err != nil {
-		fmt.Println("asdf")
+
 		return nil, err
 	}
 	times := time.Now()
@@ -185,14 +186,13 @@ func main() {
 	lis, err := net.Listen("tcp", port)
 
 	if err != nil {
-		fmt.Println("failed to listen: ", err)
-		return
+		panic(err)
+
 	}
 	s := grpc.NewServer()
 
 	usr.RegisterUserProfilesServer(s, &server{})
 
 	s.Serve(lis)
-	fmt.Println("started")
 
 }
