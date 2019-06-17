@@ -14,7 +14,7 @@ import (
 
 	// "github.com/golang/protobuf/proto"
 	"fmt"
-	usr "users/uproto"
+	usr "users-grpc/uproto"
 
 	"github.com/lib/pq"
 
@@ -54,7 +54,7 @@ func (s *server) CreateUserProfile(c context.Context, req *usr.CreateUserProfile
 	if err != nil {
 		return nil, err
 	}
-
+	req.UserProfile.Id = u1.String()
 	return req.UserProfile, nil
 
 }
